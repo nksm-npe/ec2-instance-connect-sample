@@ -1,8 +1,8 @@
 {
-  "name": "cdk_ec2-session",
+  "name": "ec2-session",
   "version": "0.1.0",
   "bin": {
-    "cdk_ec2-session": "bin/cdk_ec2-session.js"
+    "ec2-session": "bin/ec2-session.js"
   },
   "scripts": {
     "build": "tsc",
