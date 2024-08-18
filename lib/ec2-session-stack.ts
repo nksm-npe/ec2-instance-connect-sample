@@ -84,7 +84,7 @@ export class Ec2SessionStack extends Stack {
       cpuType: ec2.AmazonLinuxCpuType.X86_64,
     });
 
-    new ec2.Instance(this, "Ec2AmazonLinux", {
+    new ec2.Instance(this, "AmazonLinux", {
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T2,
         ec2.InstanceSize.MICRO
@@ -111,11 +111,11 @@ export class Ec2SessionStack extends Stack {
     );
 
     const amiCentOsStream9 = new ec2.GenericLinuxImage({
-      // "ap-northeast-1": "ami-0f645e55f2fd43967", // CentOS Stream 8
-      "ap-northeast-1": "ami-074c801439a538a43", // CentOS Stream 9
+      // "ap-northeast-1": "ami-0f645e55f2fd43967", // CentOS Stream 8, 利用前にMarketPlaceで購読が必要
+      "ap-northeast-1": "ami-074c801439a538a43", // CentOS Stream 9,  利用前にMarketPlaceで購読が必要
     });
 
-    new ec2.Instance(this, "Ec2InstanceCentOs", {
+    new ec2.Instance(this, "CentOS", {
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T3,
         ec2.InstanceSize.MICRO
