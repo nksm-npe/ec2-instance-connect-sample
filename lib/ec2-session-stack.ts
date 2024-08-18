@@ -49,30 +49,30 @@ export class Ec2SessionStack extends Stack {
 
     subnetPriA.addDefaultNatRoute(natGw.ref);
 
-    const sgEic = new ec2.SecurityGroup(this, "SG_EIC", {
+    const sgIce = new ec2.SecurityGroup(this, "SgInstanceConectEndpoint", {
       vpc: vpc,
-      description: "sg for EIC",
+      description: "Security Group for InstanceConnect Endpoint",
     });
 
     new ec2.CfnInstanceConnectEndpoint(this, "InstanceConnectEndpoint", {
       subnetId: subnetPriA.subnetId,
-      securityGroupIds: [sgEic.securityGroupId],
-      tags: [{ key: "Name", value: "ICE" }],
+      securityGroupIds: [sgIce.securityGroupId],
+      tags: [{ key: "Name", value: "InstanceConnectEndpoint" }],
     });
 
-    const sgEc2 = new ec2.SecurityGroup(this, "SG_EC2", {
+    const sgEc2 = new ec2.SecurityGroup(this, "SgEc2", {
       vpc: vpc,
-      description: "sg for EC2",
+      description: "Security Group for EC2",
     });
     sgEc2.addIngressRule(
-      ec2.Peer.securityGroupId(sgEic.securityGroupId),
+      ec2.Peer.securityGroupId(sgIce.securityGroupId),
       ec2.Port.tcp(22),
-      "ssh"
+      "ssh from InstanceConnect Endpoint"
     );
 
     const ec2VpcSubnets = vpc.selectSubnets({
       subnets: [
-        ec2.Subnet.fromSubnetAttributes(this, "VPC_SUBNETS", {
+        ec2.Subnet.fromSubnetAttributes(this, "Ec2Subnets", {
           subnetId: subnetPriA.subnetId,
           availabilityZone: subnetPubA.availabilityZone,
         }),
@@ -84,7 +84,7 @@ export class Ec2SessionStack extends Stack {
       cpuType: ec2.AmazonLinuxCpuType.X86_64,
     });
 
-    new ec2.Instance(this, "EC2_INSTANCE", {
+    new ec2.Instance(this, "Ec2AmazonLinux", {
       instanceType: ec2.InstanceType.of(
         ec2.InstanceClass.T2,
         ec2.InstanceSize.MICRO
@@ -111,8 +111,8 @@ export class Ec2SessionStack extends Stack {
     );
 
     const amiCentOsStream9 = new ec2.GenericLinuxImage({
-      // "ap-northeast-1": "ami-0f645e55f2fd43967", // centos 8
-      "ap-northeast-1": "ami-074c801439a538a43", // centos 9
+      // "ap-northeast-1": "ami-0f645e55f2fd43967", // CentOS Stream 8
+      "ap-northeast-1": "ami-074c801439a538a43", // CentOS Stream 9
     });
 
     new ec2.Instance(this, "Ec2InstanceCentOs", {
