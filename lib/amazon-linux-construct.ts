@@ -20,7 +20,7 @@ export class AmazonLinuxConstruct extends Construct {
         }),
       ],
     });
-    // Look up the AMI Id for the Amazon Linux 2 Image with CPU Type X86_64
+
     const ami = new ec2.AmazonLinuxImage({
       generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2023,
       cpuType: ec2.AmazonLinuxCpuType.X86_64,

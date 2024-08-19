@@ -29,12 +29,12 @@ export class Ec2SessionStack extends Stack {
     });
     subnetPubA.addDefaultInternetRoute(iGw.ref, iGwAttach);
 
-    // NAT GW
-    const eipNGWA = new ec2.CfnEIP(this, "EIP_NGWA", {});
-    Tags.of(eipNGWA).add("Name", "eip-ngw-a");
+    // NAT GW (availability zone A)
+    const eipNGwA = new ec2.CfnEIP(this, "EIP_NGWA", {});
+    Tags.of(eipNGwA).add("Name", "eip-ngw-a");
     const natGw = new ec2.CfnNatGateway(this, "NATGW", {
       subnetId: subnetPubA.subnetId,
-      allocationId: eipNGWA.attrAllocationId,
+      allocationId: eipNGwA.attrAllocationId,
       tags: [{ key: "Name", value: "NATGW" }],
     });
 
