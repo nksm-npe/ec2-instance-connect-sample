@@ -7,15 +7,19 @@ export class Ec2SessionStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const CIDR_VPC = "10.0.0.0/16";
+    const CIDR_SUBNET_PUB_A = "10.0.0.0/24";
+    const CIDR_SUBNET_PRI_A = "10.0.2.0/24";
+
     const vpc = new ec2.Vpc(this, "VPC", {
-      ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
+      ipAddresses: ec2.IpAddresses.cidr(CIDR_VPC),
       vpcName: "vpc-1",
       subnetConfiguration: [],
     });
 
     const subnetPubA = new ec2.Subnet(this, "SubnetPubA", {
       vpcId: vpc.vpcId,
-      cidrBlock: "10.0.0.0/24",
+      cidrBlock: CIDR_SUBNET_PUB_A,
       availabilityZone: "ap-northeast-1a",
     });
     Tags.of(subnetPubA).add("Name", "subnet-pub-a");
@@ -40,7 +44,7 @@ export class Ec2SessionStack extends Stack {
 
     const subnetPriA = new ec2.Subnet(this, "SubnetPriA", {
       vpcId: vpc.vpcId,
-      cidrBlock: "10.0.2.0/24",
+      cidrBlock: CIDR_SUBNET_PRI_A,
       availabilityZone: "ap-northeast-1a",
     });
     Tags.of(subnetPriA).add("Name", "subnet-pri-a");
