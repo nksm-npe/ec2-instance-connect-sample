@@ -7,6 +7,7 @@ export class Ec2SessionStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const allocateOnPrivate = false; // TODO パラメータ化
     const CIDR_VPC = "10.0.0.0/16";
     const CIDR_SUBNET_PUB_A = "10.0.0.0/24";
     const CIDR_SUBNET_PRI_A = "10.0.2.0/24";
@@ -33,23 +34,30 @@ export class Ec2SessionStack extends Stack {
     });
     subnetPubA.addDefaultInternetRoute(iGw.ref, iGwAttach);
 
-    // NAT GW (availability zone A)
-    const eipNGwA = new ec2.CfnEIP(this, "EIP_NGWA", {});
-    Tags.of(eipNGwA).add("Name", "eip-ngw-a");
-    const natGw = new ec2.CfnNatGateway(this, "NATGW", {
-      subnetId: subnetPubA.subnetId,
-      allocationId: eipNGwA.attrAllocationId,
-      tags: [{ key: "Name", value: "NATGW" }],
-    });
+    const ec2Subnet = allocateOnPrivate
+      ? (() => {
+          // EC2をプライベートサブネットに配置する場合、
+          //  プライベートサブネットと合わせてNATGatewayを作る
+          const subnetPriA = new ec2.Subnet(this, "SubnetPriA", {
+            vpcId: vpc.vpcId,
+            cidrBlock: CIDR_SUBNET_PRI_A,
+            availabilityZone: "ap-northeast-1a",
+          });
+          Tags.of(subnetPriA).add("Name", "subnet-pri-a");
 
-    const subnetPriA = new ec2.Subnet(this, "SubnetPriA", {
-      vpcId: vpc.vpcId,
-      cidrBlock: CIDR_SUBNET_PRI_A,
-      availabilityZone: "ap-northeast-1a",
-    });
-    Tags.of(subnetPriA).add("Name", "subnet-pri-a");
+          // NAT GW (availability zone A)
+          const eipNGwA = new ec2.CfnEIP(this, "EIP_NGWA", {});
+          Tags.of(eipNGwA).add("Name", "eip-ngw-a");
+          const natGw = new ec2.CfnNatGateway(this, "NATGW", {
+            subnetId: subnetPubA.subnetId,
+            allocationId: eipNGwA.attrAllocationId,
+            tags: [{ key: "Name", value: "NATGW" }],
+          });
+          subnetPriA.addDefaultNatRoute(natGw.ref);
 
-    subnetPriA.addDefaultNatRoute(natGw.ref);
+          return subnetPriA;
+        })()
+      : subnetPubA;
 
     const sgIce = new ec2.SecurityGroup(this, "SgInstanceConectEndpoint", {
       vpc: vpc,
@@ -57,7 +65,7 @@ export class Ec2SessionStack extends Stack {
     });
 
     new ec2.CfnInstanceConnectEndpoint(this, "InstanceConnectEndpoint", {
-      subnetId: subnetPriA.subnetId,
+      subnetId: ec2Subnet.subnetId,
       securityGroupIds: [sgIce.securityGroupId],
       tags: [{ key: "Name", value: "InstanceConnectEndpoint" }],
     });
@@ -74,14 +82,16 @@ export class Ec2SessionStack extends Stack {
 
     new AmazonLinuxConstruct(this, "AmazonLinux", {
       vpc: vpc,
-      subnet: subnetPriA,
+      subnet: ec2Subnet,
       securityGroup: sgEc2,
+      associateEip: !allocateOnPrivate,
     });
 
     new CentOSConstruct(this, "CentOS", {
       vpc: vpc,
-      subnet: subnetPriA,
+      subnet: ec2Subnet,
       securityGroup: sgEc2,
+      associateEip: !allocateOnPrivate,
     });
   }
 }
