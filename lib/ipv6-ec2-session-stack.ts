@@ -24,47 +24,6 @@ export class IpV6Ec2SessionStack extends Stack {
       ipProtocol: ec2.IpProtocol.DUAL_STACK,
     });
 
-    // const subnetPubA = new ec2.Subnet(this, "SubnetPubA", {
-    //   vpcId: vpc.vpcId,
-    //   cidrBlock: CIDR_SUBNET_PUB_A,
-    //   availabilityZone: "ap-northeast-1a",
-    // });
-    // Tags.of(subnetPubA).add("Name", "subnet-pub-a");
-
-    // const iGw = new ec2.CfnInternetGateway(this, "IGW", {
-    //   tags: [{ key: "Name", value: "IGW" }],
-    // });
-    // const iGwAttach = new ec2.CfnVPCGatewayAttachment(this, "IGWA", {
-    //   vpcId: vpc.vpcId,
-    //   internetGatewayId: iGw.ref,
-    // });
-    // subnetPubA.addDefaultInternetRoute(iGw.ref, iGwAttach);
-
-    // const ec2Subnet = allocateOnPrivate
-    //   ? (() => {
-    //       // EC2をプライベートサブネットに配置する場合、
-    //       //  プライベートサブネットと合わせてNATGatewayを作る
-    //       const subnetPriA = new ec2.Subnet(this, "SubnetPriA", {
-    //         vpcId: vpc.vpcId,
-    //         cidrBlock: CIDR_SUBNET_PRI_A,
-    //         availabilityZone: "ap-northeast-1a",
-    //       });
-    //       Tags.of(subnetPriA).add("Name", "subnet-pri-a");
-
-    //       // NAT GW (availability zone A)
-    //       const eipNGwA = new ec2.CfnEIP(this, "EIP_NGWA", {});
-    //       Tags.of(eipNGwA).add("Name", "eip-ngw-a");
-    //       const natGw = new ec2.CfnNatGateway(this, "NATGW", {
-    //         subnetId: subnetPubA.subnetId,
-    //         allocationId: eipNGwA.attrAllocationId,
-    //         tags: [{ key: "Name", value: "NATGW" }],
-    //       });
-    //       subnetPriA.addDefaultNatRoute(natGw.ref);
-
-    //       return subnetPriA;
-    //     })()
-    //   : subnetPubA;
-
     const sgIce = new ec2.SecurityGroup(this, "SgInstanceConectEndpoint", {
       vpc: vpc,
       description: "Security Group for InstanceConnect Endpoint",
@@ -103,7 +62,7 @@ export class IpV6Ec2SessionStack extends Stack {
     //   vpc: vpc,
     //   subnet: ec2Subnet,
     //   securityGroup: sgEc2,
-    //   associateEip: !allocateOnPrivate,
+    //   associateEip: false,
     // });
   }
 }
