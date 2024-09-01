@@ -1,15 +1,14 @@
-# Welcome to your CDK TypeScript project
+## Commands
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`Ec2SessionStack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+- `cdk deploy Ec2SessionStack` : IpV4 Version.
+- `cdk deploy IpV6Ec2SessionStack` : IpV6 version.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+## Network diagrams
 
-## Useful commands
+### IPv4
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+![](docs/diagrams/ipv4.drawio.svg)
+
+### IPv6
+
+![](docs/diagrams/ipv6.drawio.svg)
