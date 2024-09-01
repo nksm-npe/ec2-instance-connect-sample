@@ -16,10 +16,22 @@ This code contains following 3 Stacks;
 cdk deploy <StackName>
 ```
 
+e.g.
+
+```bash
+cdk deploy Ec2SessionStack
+```
+
 ### delete stack
 
 ```bash
 cdk destroy <StackName>
+```
+
+e.g.
+
+```bash
+cdk destroy Ec2SessionStack
 ```
 
 ## Network diagrams
