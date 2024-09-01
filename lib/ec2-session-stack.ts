@@ -3,11 +3,17 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 import { AmazonLinuxConstruct as AmazonLinuxConstruct } from "./amazon-linux-construct";
 import { CentOSInstanceConstruct as CentOSConstruct } from "./centos-construct";
+
+export interface Ec2SessionStackProps extends StackProps {
+  allocateOnPublic?: boolean;
+}
 export class Ec2SessionStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props?: Ec2SessionStackProps) {
     super(scope, id, props);
 
-    const allocateOnPrivate = false; // TODO パラメータ化
+    const allocateOnPublic = props?.allocateOnPublic
+      ? props.allocateOnPublic
+      : false;
     const CIDR_VPC = "10.0.0.0/16";
     const CIDR_SUBNET_PUB_A = "10.0.0.0/24";
     const CIDR_SUBNET_PRI_A = "10.0.2.0/24";
@@ -34,8 +40,9 @@ export class Ec2SessionStack extends Stack {
     });
     subnetPubA.addDefaultInternetRoute(iGw.ref, iGwAttach);
 
-    const ec2Subnet = allocateOnPrivate
-      ? (() => {
+    const ec2Subnet = allocateOnPublic
+      ? subnetPubA
+      : (() => {
           // EC2をプライベートサブネットに配置する場合、
           //  プライベートサブネットと合わせてNATGatewayを作る
           const subnetPriA = new ec2.Subnet(this, "SubnetPriA", {
@@ -56,8 +63,7 @@ export class Ec2SessionStack extends Stack {
           subnetPriA.addDefaultNatRoute(natGw.ref);
 
           return subnetPriA;
-        })()
-      : subnetPubA;
+        })();
 
     const sgIce = new ec2.SecurityGroup(this, "SgInstanceConectEndpoint", {
       vpc: vpc,
@@ -84,14 +90,14 @@ export class Ec2SessionStack extends Stack {
       vpc: vpc,
       subnet: ec2Subnet,
       securityGroup: sgEc2,
-      associateEip: !allocateOnPrivate,
+      associateEip: allocateOnPublic,
     });
 
     new CentOSConstruct(this, "CentOS", {
       vpc: vpc,
       subnet: ec2Subnet,
       securityGroup: sgEc2,
-      associateEip: !allocateOnPrivate,
+      associateEip: allocateOnPublic,
     });
   }
 }
