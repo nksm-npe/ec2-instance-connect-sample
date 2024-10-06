@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.8 Chrome/128.0.6613.36 Electron/32.0.1 Safari/537.36" version="24.7.8">
   <diagram name="ページ1" id="0lzz0qcHJcDkH_nxHKsg">
-    <mxGraphModel dx="2172" dy="1351" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2172" dy="1305" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -51,14 +51,11 @@
         <mxCell id="8wl--d6G9Zwy83Y7K9Jy-28" value="EC2 Instance Connect Endpoint" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="LIO6guwHClqdhaRPujZN-5" vertex="1">
           <mxGeometry x="8" y="141" width="142" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="95knh8Bovt5yonhoBNfu-1" value="Security group" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" vertex="1" parent="LIO6guwHClqdhaRPujZN-5">
+        <mxCell id="95knh8Bovt5yonhoBNfu-1" value="Security group" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" parent="LIO6guwHClqdhaRPujZN-5" vertex="1">
           <mxGeometry x="8" y="32" width="150" height="138" as="geometry" />
         </mxCell>
-        <mxCell id="95knh8Bovt5yonhoBNfu-11" value="Security group" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" vertex="1" parent="LIO6guwHClqdhaRPujZN-5">
+        <mxCell id="95knh8Bovt5yonhoBNfu-11" value="Security group" style="fillColor=none;strokeColor=#DD3522;verticalAlign=top;fontStyle=0;fontColor=#DD3522;whiteSpace=wrap;html=1;" parent="LIO6guwHClqdhaRPujZN-5" vertex="1">
           <mxGeometry x="252" y="32" width="150" height="138" as="geometry" />
-        </mxCell>
-        <mxCell id="8wl--d6G9Zwy83Y7K9Jy-1" value="図 IPv6構成" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="-40" y="1241" width="90" height="30" as="geometry" />
         </mxCell>
         <mxCell id="8wl--d6G9Zwy83Y7K9Jy-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="LIO6guwHClqdhaRPujZN-13" target="LIO6guwHClqdhaRPujZN-8" edge="1">
           <mxGeometry relative="1" as="geometry">

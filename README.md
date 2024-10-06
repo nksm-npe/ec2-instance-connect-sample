@@ -1,6 +1,6 @@
 # EC2 Instance Connect Session Stack Samples
 
-These stacks deploys Simple VPC Network structure and EC2 Instance Connect Endpoint which enables EC2 session without bastion server.
+These stacks struct simple VPC network, EC2 instance, and EC2 Instance Connect Endpoint which enables EC2 session without bastion server.
 
 This code contains following 3 Stacks;
 
@@ -10,25 +10,25 @@ This code contains following 3 Stacks;
 
 ## Commands
 
-### deploy stack
+### Deploy stack
 
 ```bash
 cdk deploy <StackName>
 ```
 
-e.g.
+For example, if you want to deploy `Ec2SessionStack`;
 
 ```bash
 cdk deploy Ec2SessionStack
 ```
 
-### delete stack
+### Destroy stack
 
 ```bash
 cdk destroy <StackName>
 ```
 
-e.g.
+For example, if you want to destroy `Ec2SessionStack`;
 
 ```bash
 cdk destroy Ec2SessionStack
